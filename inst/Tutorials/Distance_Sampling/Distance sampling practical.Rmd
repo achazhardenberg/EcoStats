@@ -95,7 +95,7 @@ library(Distance)
 ```
 
 ```{r data-load}
-chamois.dat<-read.csv("www/distance_chamois.csv")
+chamois.dat<-read.csv("distance_chamois.csv")
 chamois.dat$angle <- chamois.dat$angle*(pi/180)
 chamois.dat$distance <- chamois.dat$obs.distance*cos(chamois.dat$angle)
 names(chamois.dat)<-c("Date","Sample.Label","replicate","angle",
@@ -103,6 +103,7 @@ names(chamois.dat)<-c("Date","Sample.Label","replicate","angle",
 chamois.dat$Effort <-chamois.dat$Effort*8
 chamois.dat$Region.Label<-"GPNP"
 chamois.dat$Area <-10.8
+chamois_hn<-ds(chamois.dat, convert.units = 0.001)
 ```
   
 Let's now start by trying to fit a 'half-normal' key function using the `ds` function. The 'half-normal' key function, is the default one, so we do not need to specify it in the arguments.
@@ -110,13 +111,6 @@ We also add the convert.units argument, because transect length (Effort) is expr
 
 ```{r half_normal, echo=T, eval=F}
 chamois_hn<-ds(chamois.dat, convert.units = 0.001)
-```
-
-You can try this directly here in the tutorial or otherwise in your script:
-```{r half_normal_try, exercise=TRUE, exercise.setup = "data-load"}
-
-
-
 ```
 
 
