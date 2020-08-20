@@ -96,6 +96,7 @@ library(Distance)
 ```
 
 ```{r data-load}
+library(Distance)
 chamois.dat<-read.csv("https://github.com/achazhardenberg/EcoStats/blob/master/inst/Tutorials/Distance_Sampling/www/distance_chamois.csv")
 chamois.dat$angle <- chamois.dat$angle*(pi/180)
 chamois.dat$distance <- chamois.dat$obs.distance*cos(chamois.dat$angle)
