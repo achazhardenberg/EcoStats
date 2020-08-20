@@ -95,7 +95,7 @@ library(Distance)
 ```
 
 ```{r data-load}
-chamois.dat<-read.csv("distance_chamois.csv")
+chamois.dat<-read.csv("https://github.com/achazhardenberg/EcoStats/blob/master/inst/Tutorials/Distance_Sampling/www/distance_chamois.csv")
 chamois.dat$angle <- chamois.dat$angle*(pi/180)
 chamois.dat$distance <- chamois.dat$obs.distance*cos(chamois.dat$angle)
 names(chamois.dat)<-c("Date","Sample.Label","replicate","angle",
@@ -118,13 +118,18 @@ The function `ds` automatically fits the choosen detection function with various
 
 We can give a look to the resulting detection function graphically using `plot`:
 
-```{r plot, echo=T, eval=F}
-plot(chamois_hn)
-```
-The detection function looks reasonable, and we can check this  applying also a formal Goodness of Fit test. `Distance` offers three different tests (Chi-square, Kolmogorov-Smirnov and Cramer-von Mises test) through the `ddf.gof` function which we can call on the 'ddf' object within model object (in this case chamois_hn). By default, also a Q-Q plot is generated: Basically, if all the points are nicely on the line in the qq plot and the tests result beeing **not significant**, it means that the distance data do not deviate significantly from the expected detection function, and therefore we can say that we have a reasonably good fit of the data and the detection model.   
+```{r glimpse, exercise=TRUE, exercise.setup = "data-load"}
 
-```{r gof, echo=T, eval=F}
+
+
+```
+
+The detection function looks reasonable, and we can check this  applying also a formal Goodness of Fit test. `Distance` offers three different tests (Chi-square, Kolmogorov-Smirnov and Cramer-von Mises test) through the `ddf.gof` function which we can call on the 'ddf' object within the model object (in this case chamois_hn). By default, also a Q-Q plot is generated: Basically, if all the points are nicely on the line in the qq plot and the tests result beeing **not significant**, it means that the distance data do not deviate significantly from the expected detection function, and therefore we can say that we have a reasonably good fit of the data and the detection model.   
+
+```{r gof, exercise=TRUE, exercise.setup = "data-load"}
 ddf.gof(chamois_hn$ddf)
+
+
 ```
   
 Let's try also a "Hazard-Rate" key function: 
@@ -135,18 +140,20 @@ chamois_hr<-ds(chamois.dat, key="hr",convert.units = 0.001)
 
 And let's look at the resulting Detection function also for this model: 
 
-```{r plot_hr, echo=T, eval=F}
-plot(chamois_hr)
+```{r glimpse2, exercise=TRUE, exercise.setup = "data-load"}
+
+
+
 ```
 
 Compare this plot with the detection function obtanied with the 'Half-normal' key. What differences do you notice?
 
 So, which key function should we finally choose to estimate the density and abundance of chamois? Again we can use AIC, and thus select the best possible combination of key function and adjustment terms, using the `summarize_ds_models` function:
-```{r summarize, echo=T, eval=F}
+```{r summarize,  echo=T, eval=F}
 summarize_ds_models(chamois_hn,chamois_hr, output = "plain")
 ```
 
-```{r kable_table, echo=F, eval=F}
+```{r kable_table, echo=F, eval=T}
 library(knitr)
 kable(summarize_ds_models(chamois_hn,chamois_hr),format="markdown")
 ```
@@ -157,8 +164,10 @@ Delta AIC represents the difference in AIC from the model with the lowest AIC (b
 
 The estimation of the Density and the Abundance is obtained with `Distance` simply calling the summary of the selected model object (In this case the Hazard-rate model without adjustments provided by chamois_hr):
 
-```{r  summary, echo=T, eval=F}
-summary(chamois_hr)
+```{r  summary,exercise=TRUE, exercise.setup = "data-load"}
+
+
+
 ```
 
 ## Literature cited
