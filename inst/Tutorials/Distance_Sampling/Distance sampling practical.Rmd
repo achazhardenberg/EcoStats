@@ -151,13 +151,11 @@ And let's look at the resulting Detection function also for this model:
 Compare this plot with the detection function obtanied with the 'Half-normal' key. What differences do you notice?
 
 So, which key function should we finally choose to estimate the density and abundance of chamois? Again we can use AIC, and thus select the best possible combination of key function and adjustment terms, using the `summarize_ds_models` function:
-```{r summarize,  echo=T, eval=F}
-summarize_ds_models(chamois_hn,chamois_hr, output = "plain")
-```
 
-```{r kable_table, echo=F, eval=T}
-library(knitr)
-kable(summarize_ds_models(chamois_hn,chamois_hr),format="markdown")
+```{r kable_table, exercise=TRUE, exercise.setup = "data-load"}
+summarize_ds_models(chamois_hn,chamois_hr, output = "plain")
+
+
 ```
 
 Delta AIC represents the difference in AIC from the model with the lowest AIC (best fitting model), which in this case is the one with a hazard-rate key function without adjustements and which we will thus use to estimate the abundance and density.
