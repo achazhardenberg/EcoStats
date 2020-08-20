@@ -79,7 +79,7 @@ chamois.dat$Area <-10.8
 
 We have now everything we need to perform our Distance sampling analysis
 
-## Estimating the detection function
+# Estimating the detection function
 
 If you have not done so before, it is now time to install the package `Distance` (Miller et al. 2014):
 
@@ -139,7 +139,7 @@ summarize_ds_models(chamois_hn,chamois_hr, output = "plain")
 
 Delta AIC represents the difference in AIC from the model with the lowest AIC (best fitting model), which in this case is the one with a hazard-rate key function without adjustements and which we will thus use to estimate the abundance and density.
 
-## Estimating the Density and Abundance
+# Estimating the Density and Abundance
 
 The estimation of the Density and the Abundance is obtained with `Distance` simply calling the summary of the selected model object (In this case the Hazard-rate model without adjustments provided by chamois_hr):
 
@@ -147,7 +147,7 @@ The estimation of the Density and the Abundance is obtained with `Distance` simp
 summary(chamois_hr)
 ```
 
-## Literature cited
+# Literature cited
 
 Corlatti, L., Fattorini, L., & Nelli, L. (2015). The use of block counts, mark-resight and distance sampling to estimate population size of a mountain-dwelling ungulate. *Population Ecology*, 57(2), 409-419.
 
