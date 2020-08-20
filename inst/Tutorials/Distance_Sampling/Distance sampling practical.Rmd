@@ -3,12 +3,12 @@ title: "Distance Sampling Tutorial"
 output: learnr::tutorial
 runtime: shiny_prerendered
 description: "Learn how to perform a distance sampling analysis in R to estimate the density of Alpine Chamois in an area of Gran Paradiso National Park"
-version: 1.0
+version: 1.2
 ---
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = F, message = F)
 ```
 
 ## Data background
