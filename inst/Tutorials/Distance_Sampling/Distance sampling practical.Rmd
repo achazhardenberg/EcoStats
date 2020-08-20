@@ -1,9 +1,9 @@
 ---
-title: "Distance-Sampling Tutorial"
+title: "Distance Sampling Tutorial"
 output: learnr::tutorial
 runtime: shiny_prerendered
 description: "Learn how to perform a distance sampling analysis in R to estimate the density of Alpine Chamois in an area of Gran Paradiso National Park"
-version: 1.5
+version: 2.0
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +11,7 @@ library(learnr)
 knitr::opts_chunk$set(echo = FALSE, warning = F, message = F)
 ```
 
-## Data background
+# Data background
 
 In this practical we will reanalise the data used in Corlatti, Fattorini and Nelli (2014). The paper compares three different census techniques (block counts, distance sampling and capture-mark recapture) to estimate the density of male Alpine chamois (*Rupicapra rupicapra*) in an area of the Gran Paradiso National Park (Italy). In this exercise we will concentrate only on the linear transect data used for distance sampling (data kindly provided by the authors). In the paper the linear transect data was analysed using the windows based program DISTANCE 6.0. Here we will see instead how to performe the same analysis within R using the `Distance` package by Miller et al. (2016). 
 
@@ -21,7 +21,7 @@ The data file provided by the authors is called `distance_chamois.csv` and you c
 chamois.dat<-read.csv("distance_chamois.csv")
 ```
 
-## File preparation and formatting
+# File preparation and formatting
 
 Commonly distance sampling data is collected in the field as the linear distance from the observed animals and the angle formed by the intersection of the linear transect and the imaginary line between the observer and the animal.
 
@@ -95,20 +95,6 @@ To use the functions inside the Distance package, you will have first to call it
 library(Distance)
 ```
 
-```{r data-load}
-library(Distance)
-chamois.dat<-read.csv("https://raw.githubusercontent.com/achazhardenberg/EcoStats/master/inst/Tutorials/Distance_Sampling/www/distance_chamois.csv")
-chamois.dat$angle <- chamois.dat$angle*(pi/180)
-chamois.dat$distance <- chamois.dat$obs.distance*cos(chamois.dat$angle)
-names(chamois.dat)<-c("Date","Sample.Label","replicate","angle",
-                      "obs.distance","size","Effort","distance")
-chamois.dat$Effort <-chamois.dat$Effort*8
-chamois.dat$Region.Label<-"GPNP"
-chamois.dat$Area <-10.8
-chamois_hn<-ds(chamois.dat, convert.units = 0.001)
-chamois_hr<-ds(chamois.dat, key="hr", convert.units = 0.001)
-```
-  
 Let's now start by trying to fit a 'half-normal' key function using the `ds` function. The 'half-normal' key function, is the default one, so we do not need to specify it in the arguments.
 We also add the convert.units argument, because transect length (Effort) is expressed in $Km$ while the distances are in meters. Applying a unit conversion of 0.001, we convert the distances to the same unit as the transect length, and  our density estimates will correctly be expressed as nr. chamois/$Km^2$.
 
@@ -121,18 +107,14 @@ The function `ds` automatically fits the choosen detection function with various
 
 We can give a look to the resulting detection function graphically using `plot`:
 
-```{r glimpse, exercise=TRUE, exercise.setup = "data-load"}
-
-
-
+```{r plot, echo=T, eval=F}
+plot(chamois_hn)
 ```
 
 The detection function looks reasonable, and we can check this  applying also a formal Goodness of Fit test. `Distance` offers three different tests (Chi-square, Kolmogorov-Smirnov and Cramer-von Mises test) through the `ddf.gof` function which we can call on the 'ddf' object within the model object (in this case chamois_hn). By default, also a Q-Q plot is generated: Basically, if all the points are nicely on the line in the qq plot and the tests result beeing **not significant**, it means that the distance data do not deviate significantly from the expected detection function, and therefore we can say that we have a reasonably good fit of the data and the detection model.   
 
-```{r gof, exercise=TRUE, exercise.setup = "data-load"}
+```{r gof, echo=T, eval=F}
 ddf.gof(chamois_hn$ddf)
-
-
 ```
   
 Let's try also a "Hazard-Rate" key function: 
@@ -143,20 +125,16 @@ chamois_hr<-ds(chamois.dat, key="hr",convert.units = 0.001)
 
 And let's look at the resulting Detection function also for this model: 
 
-```{r glimpse2, exercise=TRUE, exercise.setup = "data-load"}
-
-
-
+```{r plot2, echo=T, eval=F}
+plot(chamois_hn)
 ```
 
 Compare this plot with the detection function obtanied with the 'Half-normal' key. What differences do you notice?
 
 So, which key function should we finally choose to estimate the density and abundance of chamois? Again we can use AIC, and thus select the best possible combination of key function and adjustment terms, using the `summarize_ds_models` function:
 
-```{r kable_table, exercise=TRUE, exercise.setup = "data-load"}
+```{r kable_table, echo=T, eval=F}
 summarize_ds_models(chamois_hn,chamois_hr, output = "plain")
-
-
 ```
 
 Delta AIC represents the difference in AIC from the model with the lowest AIC (best fitting model), which in this case is the one with a hazard-rate key function without adjustements and which we will thus use to estimate the abundance and density.
@@ -165,10 +143,8 @@ Delta AIC represents the difference in AIC from the model with the lowest AIC (b
 
 The estimation of the Density and the Abundance is obtained with `Distance` simply calling the summary of the selected model object (In this case the Hazard-rate model without adjustments provided by chamois_hr):
 
-```{r  summary,exercise=TRUE, exercise.setup = "data-load"}
-
-
-
+```{r  summary,echo=T, eval=F}
+summary(chamois_hr)
 ```
 
 ## Literature cited
